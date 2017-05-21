@@ -2,6 +2,7 @@ package de.jboka.shareviewtryout;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class MyRecylcleListAdapter  extends RecyclerView.Adapter<MyRecylcleListA
     private List<MyListItem> itemList;
     private Context context;
 
+    private int mExpandedPosition = -1;
     OnItemClickListener clickListener;
 
     public MyRecylcleListAdapter(List<MyListItem> itemList, Context context) {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fillRecyclerView(){
         for(int i=0; i<10; i++){
-            MyListItem item = new MyListItem("Title " + i, "Description " + i);
+            MyListItem item = new MyListItem("Title " + i, getString(R.string.txt_desc));
             itemList.add(item);
             Log.d("MYAPP", item.getTitle());
         }
@@ -58,10 +59,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 Toast.makeText(context, recylcleListAdapter.getItem(position).getTitle() + " clicked", Toast.LENGTH_SHORT).show();
                 MyListItem item = recylcleListAdapter.getItem(position);
-                Intent intent = new Intent(context, ShareToActivity.class);
-                intent.putExtra("shareCard", item);
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, view.findViewById(R.id.card), "card");
-                startActivity(intent, optionsCompat.toBundle());
+                final boolean isExpanded = !view.isActivated();
+                view.findViewById(R.id.itemDesc).setVisibility(isExpanded?View.VISIBLE:View.GONE);
+                view.setActivated(isExpanded);
+                TransitionManager.beginDelayedTransition(recyclerView);
+                recylcleListAdapter.notifyDataSetChanged();
+                //Intent intent = new Intent(context, ShareToActivity.class);
+                //intent.putExtra("shareCard", item);
+                //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, view.findViewById(R.id.card), "card");
+                //startActivity(intent, optionsCompat.toBundle());
             }
         });
     }
